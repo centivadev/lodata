@@ -183,12 +183,15 @@ class NavigationProperty extends Property
             }
 
             if ($targetConstraint) {
-
                 $foreignKey = $targetConstraint->getReferencedProperty()->getName();
                 $localKeyName = $value->getEntitySet()->getType()->getKey();
                 $localKey = $value->getPropertyValues()->get($localKeyName)->getValue();
+                $constraintInjection = $foreignKey . " eq '" . $localKey . "'";
 
-                $expansionTransaction->getFilter()->setValue($foreignKey . ' eq ' . $localKey);
+                $filterData = $expansionTransaction->getFilter()->getValue();
+                $filterData = $filterData ? "(" . $filterData . ") and " . $constraintInjection : $constraintInjection;
+
+                $expansionTransaction->getFilter()->setValue($filterData);
             }
 
         }
