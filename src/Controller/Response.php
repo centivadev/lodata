@@ -99,7 +99,7 @@ abstract class Response extends StreamedResponse
             parent::sendContent();
         } catch (ProtocolException $e) {
             flush();
-            ob_flush();
+            // ob_flush();
             printf('OData-error: '.JSON::encode($e->toError()));
         }
 
